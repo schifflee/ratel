@@ -1,0 +1,17 @@
+{
+  "browser": "chrome",
+  "timeoutMilliseconds": 10000,
+  "waitIntervalMilliseconds": 100,
+  "isAngular": true,
+  "isSynchronization": true,
+  "baseUrl": "https://angular.io/",
+  "loginUrl": "",
+  "urls": {},
+  "chromeOptions": {
+    "binaryLocation": "",
+    "arguments": [ "--start-maximized" ],
+    "localStatePreference": {},
+    "userProfilePreference": {},
+    "additionalCapability": {}
+  }
+}
