@@ -20,32 +20,37 @@ namespace Ratel.Web.Asserts
 
         public void AreEqual(string value)
         {
-            var actual = GetNotEmpty();
-            Assert.AreEqual(value, actual, $"'{_description}' is not equal to expected. Expected: '{value}'  Actual: '{actual}'");
+            WaitNotEmpty();
+            var actual = _value();
+            Assert.AreEqual(actual, value, $"'{_description}' is not equal to expected. Expected: '{value}'  Actual: '{actual}'");
         }
 
         public void Contains(string value)
         {
-            var actual = GetNotEmpty();
-            Assert.IsTrue(_value().Contains(value), $"'{_description}' is not contain expected. Expected: '{value}'  Actual: '{actual}'");
+            WaitNotEmpty();
+            var actual = _value();
+            Assert.IsTrue(actual.Contains(value), $"'{_description}' is not contain expected. Expected: '{value}'  Actual: '{actual}'");
         }
 
         public void StartsWith(string value)
         {
-            var actual = GetNotEmpty();
-            Assert.IsTrue(_value().StartsWith(value), $"'{_description}' is not start with expected. Expected: '{value}'  Actual: '{actual}'");
+            WaitNotEmpty();
+            var actual = _value();
+            Assert.IsTrue(actual.StartsWith(value), $"'{_description}' is not start with expected. Expected: '{value}'  Actual: '{actual}'");
         }
 
         public void EndsWith(string value)
         {
-            var actual = GetNotEmpty();
-            Assert.IsTrue(_value().EndsWith(value), $"'{_description}' is not start with expected. Expected: '{value}'  Actual: '{actual}'");
+            WaitNotEmpty();
+            var actual = _value();
+            Assert.IsTrue(actual.EndsWith(value), $"'{_description}' is not start with expected. Expected: '{value}'  Actual: '{actual}'");
         }
 
         public void IsNotEmpty()
         {
-            var actual = GetNotEmpty();
-            Assert.IsFalse(string.IsNullOrEmpty(_value()), $"'{_description}' is empty, but expected is not empty. Actual: '{actual}'");
+            WaitNotEmpty();
+            var actual = _value();
+            Assert.IsFalse(string.IsNullOrEmpty(actual), $"'{_description}' is empty, but expected is not empty. Actual: '{actual}'");
         }
 
         public void IsEmpty()
@@ -54,23 +59,22 @@ namespace Ratel.Web.Asserts
             Assert.IsTrue(string.IsNullOrEmpty(_value()), $"'{_description}' is not empty, but expected empty. Actual: '{actual}'");
         }
 
-        private string GetNotEmpty()
+        private void WaitNotEmpty()
         {
             try
             {
-                return _automationManager.Wait(_value).Until(x =>
+                _automationManager.Wait(this).Until(x =>
                 {
-                    var value = x();
-                    if (!string.IsNullOrEmpty(value))
+                    if (!string.IsNullOrEmpty(x._value()))
                     {
-                        return value;
+                        return true;
                     }
-                    return null;
+                    return false;
                 });
             }
-            catch (Exception)
+            catch
             {
-                return string.Empty;
+                // ignored
             }
         }
     }

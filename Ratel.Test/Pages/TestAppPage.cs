@@ -15,7 +15,7 @@ namespace Ratel.Test.Pages
         }
         public TestAppPage EnterFullName(string name)
         {
-            Els(By.XPath("//*[@name='name']"), "Name field")[0].SendKeys(name);
+            El(By.XPath("//*[@name='name']"), "Name field").SendKeys(name);
             return this;
         }
 

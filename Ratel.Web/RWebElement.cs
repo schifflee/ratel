@@ -19,6 +19,7 @@ namespace Ratel.Web
         private readonly SearchContext<IWebElement> _context;
 
         public string Name { get; set; }
+        internal IWebElement Cache { get; set; }
 
         public RWebElement(AutomationManager automationManager, By locator, [CallerMemberName]string name = "")
         {
@@ -50,6 +51,7 @@ namespace Ratel.Web
         }
 
         public AssertRWebElement Assert => new AssertRWebElement(this, _automationManager);
+        public Should Should => new Should(this, _automationManager);
 
         public RWebElement FindElement(By by, string name)
         {
@@ -61,10 +63,7 @@ namespace Ratel.Web
             return new RWebElementCollection(_automationManager, new ElementsFinder(by, $"Children of {Name}", this));
         }
 
-        public IWebElement Find()
-        {
-            return _context.Find();
-        }
+        public IWebElement Find() => Cache ?? (Cache = _context.Find());
 
         public bool Exist
         {
@@ -82,92 +81,115 @@ namespace Ratel.Web
             }
         }
 
-
-        public IWebElement GetElementExist()
-        {
-            var element = _automationManager.Wait(_context).Until(x => _context.Find());
-            return element;
-        }
-
-        public IWebElement GetElementVisible()
-        {
-            _automationManager.Wait(_context).Until(x => _context.Find().Displayed);
-            return _context.Find();
-        }
-
-        public IWebElement GetElementClickable()
-        {
-            _automationManager.Wait(_context).Until(x =>
-            {
-                var element = x.Find();
-                return element.Displayed && Enabled;
-            });
-            return _context.Find();
-        }
-
-
-        public void Clear()
+        public RWebElement Clear()
         {
             Logger.Info($"Clear '{Name}'");
-            ExecuteAction(() => GetElementClickable().Clear());
+            ExecuteAction(() => Should.Be.Clickable().Find().Clear());
+            return this;
         }
 
-        public void SendKeys(string text)
+        public RWebElement SendKeys(string text)
         {
             Logger.Info($"SendKeys '{text}' to '{Name}'");
-            ExecuteAction(() => GetElementClickable().SendKeys(text));
+            ExecuteAction(() => Should.Be.Clickable().Find().SendKeys(text));
+            return this;
         }
 
-        public void Submit()
+        public RWebElement Submit()
         {
             Logger.Info($"Submit '{Name}'");
-            ExecuteAction(() => GetElementExist().Submit());
+            ExecuteAction(() => Should.Be.Exist().Find().Submit());
+            return this;
         }
 
-        public void Click()
+        public RWebElement Click()
         {
             Logger.Info($"Click '{Name}'");
-            ExecuteAction(() => GetElementClickable().Click());
+            ExecuteAction(() => Should.Be.Clickable().Find().Click());
+            return this;
+        }
+
+        void IWebElement.SendKeys(string text)
+        {
+            Clear();
+        }
+
+        void IWebElement.Submit()
+        {
+            Submit();
+        }
+
+        void IWebElement.Click()
+        {
+            Click();
+        }
+
+        void IWebElement.Clear()
+        {
+            Clear();
         }
 
         public string GetAttribute(string attributeName)
         {
-            return ExecuteFunc(() => GetElementExist().GetAttribute(attributeName));
+            return ExecuteFunc(() => Should.Be.Exist().Find().GetAttribute(attributeName));
         }
 
 
         public string GetProperty(string propertyName)
         {
-            return ExecuteFunc(() => GetElementExist().GetProperty(propertyName));
+            return ExecuteFunc(() => Should.Be.Exist().Find().GetProperty(propertyName));
         }
 
         public string GetCssValue(string propertyName)
         {
-            return ExecuteFunc(() => GetElementExist().GetCssValue(propertyName));
+            return ExecuteFunc(() => Should.Be.Exist().Find().GetCssValue(propertyName));
         }
 
-        public string Value => GetElementExist().GetAttribute("value");
-        public string Style => GetElementExist().GetAttribute("style");
-        public string TagName => GetElementExist().TagName;
-        public string Text => GetElementExist().Text;
-        public bool Enabled => GetElementExist().Enabled;
-        public bool Selected => GetElementExist().Selected;
-        public Point Location => ExecuteFunc(() => GetElementExist().Location); 
-        public Size Size => ExecuteFunc(() => GetElementExist().Size);
-        public bool Displayed => ExecuteFunc(() => GetElementExist().Displayed);
+        public string Value => ExecuteFunc(() => Should.Be.Exist().Find().GetAttribute("value"));
+        public string Style => ExecuteFunc(() => Should.Be.Exist().Find().GetAttribute("style")); 
+        public string TagName => ExecuteFunc(() => Should.Be.Exist().Find().TagName);
+        public string Text => ExecuteFunc(() => Should.Be.Exist().Find().Text);
+        public bool Enabled => ExecuteFunc(() => Should.Be.Exist().Find().Enabled);
+        public bool Selected => ExecuteFunc(() => Should.Be.Exist().Find().Selected); 
+        public Point Location => ExecuteFunc(() => Should.Be.Exist().Find().Location); 
+        public Size Size => ExecuteFunc(() => Should.Be.Exist().Find().Size);
+        public bool Displayed => ExecuteFunc(() => Should.Be.Exist().Find().Displayed);
 
         private void ExecuteAction(Action action)
         {
-            _automationManager.Wait(this).Until(x =>
+            _automationManager
+                .Wait(this)
+                .Until(x =>
             {
-                action();
+                try
+                {
+                    action();
+                }
+                catch (StaleElementReferenceException e)
+                {
+                    Cache = _context.Find();
+                    action();
+                }
                 return true;
             });
         }
 
         private T ExecuteFunc<T>(Func<T> func)
         {
-            return _automationManager.Wait(this).Until(x => func());
+            return _automationManager
+                .Wait(this)
+                .Until(x =>
+                {
+                    try
+                    {
+                        return func();
+                    }
+                    catch (StaleElementReferenceException e)
+                    {
+                        Cache = _context.Find();
+                        return func();
+                    }
+                });
         }
     }
 }

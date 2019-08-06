@@ -16,13 +16,13 @@ namespace Ratel.Web
     public class TestRunner
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly AutomationManager _automationManager;
+        public AutomationManager AutomationManager { get;}
         public TestConfig Config { get; set; }
 
         public TestRunner(TestConfig config)
         {
             Config = config;
-            _automationManager = new AutomationManager
+            AutomationManager = new AutomationManager
             {
                 Config = config,
             };
@@ -31,21 +31,22 @@ namespace Ratel.Web
         public TestRunner()
         {
             Config = TestConfigService.GetConfig();
-            _automationManager = new AutomationManager
+            AutomationManager = new AutomationManager
             {
                 Config = Config
             };
         }
 
-        public void Run()
+        public TestRunner Run()
         {
             Logger.Debug($"START TEST: {TestContext.CurrentContext.Test.Name}");
-            _automationManager.Driver = new RWebDriver(StartDriver(_automationManager), _automationManager);
+            AutomationManager.Driver = new RWebDriver(StartDriver(AutomationManager), AutomationManager);
+            return this;
         }
 
         public T OpenPage<T>(Func<AutomationManager, T> page) where T : BasePage<T>
         {
-            return _automationManager.Driver.Navigate().OpenPage(page);
+            return AutomationManager.Driver.Navigate().OpenPage(page);
         }
 
         public void Stop()
@@ -58,17 +59,17 @@ namespace Ratel.Web
                     var screenshotPath =
                         $"{TestContext.CurrentContext.TestDirectory}\\{TestContext.CurrentContext.Test.Name}-{DateTime.Now:MM-dd-yyyy-hh-mm-ss}.jpeg";
 
-                    _automationManager.Driver.GetScreenshot(screenshotPath);
+                    AutomationManager.Driver.GetScreenshot(screenshotPath);
                     TestContext.AddTestAttachment(screenshotPath);
                 }
 
-                _automationManager.Driver?.Quit();
+                AutomationManager.Driver?.Quit();
                 Logger.Debug("Close Driver");
             }
             catch (Exception e)
             {
                 Logger.Error(e, "Close Driver after Exception");
-                _automationManager.Driver?.Quit();
+                AutomationManager.Driver?.Quit();
             }
         }
 

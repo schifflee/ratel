@@ -16,13 +16,18 @@ namespace Ratel.Web
 
         bool Exist { get; }
 
+        new RWebElement Clear();
+
+        new RWebElement SendKeys(string text);
+
+        new RWebElement Submit();
+
+        new RWebElement Click();
+
         AssertRWebElement Assert { get; }
         RWebElement FindElement(By by, string name);
         RWebElementCollection FindElements(By by, string name);
         IWebElement Find();
-        IWebElement GetElementClickable();
-        IWebElement GetElementVisible();
-        IWebElement GetElementExist();
-
+        Should Should { get; }
     }
 }
