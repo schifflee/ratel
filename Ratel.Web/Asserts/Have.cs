@@ -24,11 +24,11 @@ namespace Ratel.Web.Asserts
             return $"{_description} {propertyName}";
         }
 
-        public StringConditions Text 
-            => new StringConditions(() => _rWebElement.Text, _condition, GetDescription(nameof(Text)), _automationManager, _rWebElement);
-        public StringConditions Value 
-            => new StringConditions(() => _rWebElement.Value, _condition, GetDescription(nameof(Value)), _automationManager, _rWebElement);
-        public StringConditions Attribute(string attributeName) 
-            => new StringConditions(() => _rWebElement.GetAttribute(attributeName), _condition, GetDescription( $"{nameof(Attribute)}({attributeName})"), _automationManager, _rWebElement);
+        public StringExpectedConditions Text 
+            => new StringExpectedConditions(() => _rWebElement.Text, _condition, GetDescription(nameof(Text)), _automationManager, _rWebElement);
+        public StringExpectedConditions Value 
+            => new StringExpectedConditions(() => _rWebElement.Value, _condition, GetDescription(nameof(Value)), _automationManager, _rWebElement);
+        public StringExpectedConditions Attribute(string attributeName) 
+            => new StringExpectedConditions(() => _rWebElement.GetAttribute(attributeName), _condition, GetDescription( $"{nameof(Attribute)}({attributeName})"), _automationManager, _rWebElement);
     }
 }

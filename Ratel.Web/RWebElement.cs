@@ -21,7 +21,7 @@ namespace Ratel.Web
         public string Name { get; set; }
         internal IWebElement Cache { get; set; }
 
-        public RWebElement(AutomationManager automationManager, By locator, [CallerMemberName]string name = "")
+        public RWebElement(AutomationManager automationManager, By locator, string name)
         {
             Name = name;
             _automationManager = automationManager;
@@ -189,7 +189,7 @@ namespace Ratel.Web
         private void ExecuteAction(Action action)
         {
             _automationManager
-                .Wait(this)
+                .AnyWait(this)
                 .Until(x =>
             {
                 try
@@ -208,7 +208,7 @@ namespace Ratel.Web
         private T ExecuteFunc<T>(Func<T> func)
         {
             return _automationManager
-                .Wait(this)
+                .AnyWait(this)
                 .Until(x =>
                 {
                     try

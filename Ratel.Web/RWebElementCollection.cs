@@ -43,7 +43,7 @@ namespace Ratel.Web
         {
             try
             {
-                _automationManager.Wait(this).Until(x => x.Count > 0);
+                _automationManager.DefaultWait(this).Until(x => x.Count > 0);
             }
             catch (Exception e)
             {
@@ -179,7 +179,7 @@ namespace Ratel.Web
                 var els = x.FindAll();
                 if (els.Count < index)
                 {
-                    throw new NoSuchElementException($"FindWithCache element '{Name}' by ({_context}).FindElement(By Index{index}) out of range '{els.Count}'");
+                    throw new NoSuchElementException($"Element '{Name}' By: ({_context}).FindElement(By Index{index}) out of range '{els.Count}'");
                 }
                 return x.FindAll()[index];
             }, $"FindAll()[{index}]", Name)); 

@@ -34,7 +34,7 @@ namespace Ratel.Web
             _context = context;
         }
 
-        public override string Description => $"FindWithCache element '{Name}' by ({_context}).FindElement({_locator})";
+        public override string Description => $"Element '{Name}' By: ({_context}).FindElement({_locator})";
         public override IWebElement Find() => _context.FindElement(_locator);
     }
 
@@ -49,7 +49,7 @@ namespace Ratel.Web
             _context = context;
         }
 
-        public override string Description => $"FindWithCache elements '{Name}' by ({_context}).FindElements({_locator})";
+        public override string Description => $"Elements '{Name}' By: ({_context}).FindElements({_locator})";
         public override ReadOnlyCollection<IWebElement> Find() => _context.FindElements(_locator);
     }
 
@@ -67,7 +67,7 @@ namespace Ratel.Web
             _conditionDescription = conditionDescription;
         }
 
-        public override string Description => $"FindWithCache element '{Name}' by ({_collection}).FindElement(by condition: {_conditionDescription})'";
+        public override string Description => $"Element '{Name}' By: ({_collection}).FindElement(by condition: {_conditionDescription})'";
         public override IWebElement Find() => _condition(_collection);
     }
 
@@ -84,7 +84,7 @@ namespace Ratel.Web
             _conditionDescription = conditionDescription;
         }
 
-        public override string Description => $"FindWithCache elements '{Name}' by ({_collection}).FindElements(by condition: {_conditionDescription})'";
+        public override string Description => $"Elements '{Name}' By: ({_collection}).FindElements(by condition: {_conditionDescription})'";
         public override ReadOnlyCollection<IWebElement> Find() => _condition(_collection);
     }
 }

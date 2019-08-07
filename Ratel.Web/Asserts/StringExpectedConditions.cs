@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 
 namespace Ratel.Web.Asserts
 {
-    public class StringConditions
+    public class StringExpectedConditions
     {
         private readonly Func<string> _value;
 
@@ -18,7 +18,7 @@ namespace Ratel.Web.Asserts
         private readonly string _description;
 
 
-        public StringConditions(Func<string> value,  bool condition, string description, AutomationManager automationManager, RWebElement rWebElement)
+        public StringExpectedConditions(Func<string> value,  bool condition, string description, AutomationManager automationManager, RWebElement rWebElement)
         {
             _value = value;
             _automationManager = automationManager;
@@ -27,7 +27,7 @@ namespace Ratel.Web.Asserts
             _rWebElement = rWebElement;
         }
 
-        public RWebElement AreEqual(string value)
+        public RWebElement Equal(string value)
         {
             GetStringCondition(AreEqualCondition, value, nameof(EndsWith));
             return _rWebElement;
@@ -84,24 +84,19 @@ namespace Ratel.Web.Asserts
 
         private void GetStringCondition(Func<string, string, bool> condition, string expected, string propertyName)
         {
-            var actual = string.Empty;
-            try
+            var wait = _automationManager.DefaultWait(_value);
+
+            wait.Until(x =>
             {
-                _automationManager.Wait(_value).Until(x =>
+                var actual = x();
+                wait.Message =
+                    $"Failed to get condition: {GetDescription(propertyName)}: {expected}. Actual: {actual} ";
+                if (condition(actual, expected))
                 {
-                     actual = x();
-                    if (condition(actual, expected))
-                    {
-                        return true;
-                    }
-                    return false;
-                });
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw new WebDriverTimeoutException($"Condition is not a true: {GetDescription(propertyName)} Expected: {expected}. Actual: {actual} ", e);
-            }
+                    return true;
+                }
+                return false;
+            });
         }
     }
 }

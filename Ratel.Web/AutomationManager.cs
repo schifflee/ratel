@@ -13,21 +13,29 @@ namespace Ratel.Web
         public TestConfig Config { get; set; }
         public IRWebDriver Driver { get; set; }
 
-        public DefaultWait<IWebDriver> WebDriverWait
+        public WebDriverWait WebDriverWait
         {
             get
             {
-                var wait = new DefaultWait<IWebDriver>(Driver);
+                var wait = new WebDriverWait(Driver.WrappedDriver, TimeSpan.FromMilliseconds(Config.WaitIntervalMilliseconds));
                 wait.IgnoreExceptionTypes(Config.IgnoredExceptions.ToArray());
-                wait.PollingInterval = TimeSpan.FromMilliseconds(Config.WaitIntervalMilliseconds);
-                wait.Timeout = TimeSpan.FromMilliseconds(Config.TimeoutMilliseconds);
+                wait.PollingInterval = TimeSpan.FromMilliseconds(Config.WaitIntervalMilliseconds); 
                 return wait;
             }
         }
 
-        public DefaultWait<T> Wait<T>(T input)
+        public DefaultWait<T> DefaultWait<T>(T input)
         {
             var wait = new DefaultWait<T>(input);
+            wait.IgnoreExceptionTypes(Config.IgnoredExceptions.ToArray());
+            wait.PollingInterval = TimeSpan.FromMilliseconds(Config.WaitIntervalMilliseconds);
+            wait.Timeout = TimeSpan.FromMilliseconds(Config.TimeoutMilliseconds);
+            return wait;
+        }
+
+        public AnyWait<T> AnyWait<T>(T input)
+        {
+            var wait = new AnyWait<T>(input);
             wait.IgnoreExceptionTypes(Config.IgnoredExceptions.ToArray());
             wait.PollingInterval = TimeSpan.FromMilliseconds(Config.WaitIntervalMilliseconds);
             wait.Timeout = TimeSpan.FromMilliseconds(Config.TimeoutMilliseconds);

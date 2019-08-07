@@ -14,7 +14,8 @@ namespace Ratel.Test.Tests
             Runner
                 .OpenPage(x => new TestAppPage(x))
                 .EnterFullName(text)
-                .AssertFullNameValueAreEqual(text);
+                .AssertFullNameValueAreEqual(text)
+                .PhycicalProductsSelected();
         }
     }
 }

@@ -30,5 +30,11 @@ namespace Ratel.Test.Pages
             Els(By.XPath("//*[@name='name']"), "Name field")[0].Assert.Value.Is.Empty();
             return this;
         }
+
+        public TestAppPage PhycicalProductsSelected()
+        {
+            var status = El(By.Id("radio1"), "Phycical Products").Should.Be.Visible();
+            return this;
+        }
     }
 }

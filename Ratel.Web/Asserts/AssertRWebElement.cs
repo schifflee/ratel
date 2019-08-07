@@ -10,44 +10,38 @@ namespace Ratel.Web.Asserts
             _element = element;
         }
 
-        public AssertCondition Text 
-            => new AssertCondition(() => _element.Text, $"Text of {_element}");
+        public StringConditions Text 
+            => new StringConditions(() => _element.Text, $"Text of {_element}");
 
-        public AssertCondition Value 
-            => new AssertCondition(() => _element.Value, $"Value of {_element}");
+        public StringConditions Value 
+            => new StringConditions(() => _element.Value, $"Value of {_element}");
 
 
-        public AssertCondition Attribute(string attributeName) 
-            => new AssertCondition(() => _element.GetAttribute(attributeName), $"Attribute({attributeName}) of {_element}");
+        public StringConditions Attribute(string attributeName) 
+            => new StringConditions(() => _element.GetAttribute(attributeName), $"Attribute({attributeName}) of {_element}");
 
-        public AssertCondition Style
-            => new AssertCondition(() => _element.Style, $"Style of {_element}");
+        public StringConditions Style
+            => new StringConditions(() => _element.Style, $"Style of {_element}");
 
-        public AssertCondition TagName
-            => new AssertCondition(() => _element.TagName, $"TagName of {_element}");
+        public StringConditions TagName
+            => new StringConditions(() => _element.TagName, $"TagName of {_element}");
 
-        public AssertCondition CssValue(string propertyName)
-            => new AssertCondition(() => _element.GetCssValue(propertyName), $"Attribute({propertyName}) of {_element}");
+        public StringConditions CssValue(string propertyName)
+            => new StringConditions(() => _element.GetCssValue(propertyName), $"Attribute({propertyName}) of {_element}");
 
-        public AssertCondition Property(string propertyName)
-            => new AssertCondition(() => _element.GetProperty(propertyName), $"Attribute({propertyName}) of {_element}");
-    }
+        public StringConditions Property(string propertyName)
+            => new StringConditions(() => _element.GetProperty(propertyName), $"Attribute({propertyName}) of {_element}");
 
-    public class AssertCondition
-    {
-        private readonly Func<string> _value;
-        private readonly string _description;
+        public BoolConditions Displayed
+            => new BoolConditions(() => _element.Displayed, $"{_element} Displayed");
 
-        public AssertCondition(Func<string> value, string description)
-        {
-            _value = value;
-            _description = description;
-        }
+        public BoolConditions Enabled
+            => new BoolConditions(() => _element.Enabled, $"{_element} Enabled");
 
-        public StringAsserts Is
-            => new StringAsserts(_value, _description, true);
+        public BoolConditions Exist
+            => new BoolConditions(() => _element.Exist, $"{_element} Exist");
 
-        public StringAsserts IsNot
-            => new StringAsserts(_value, _description, false);
+        public BoolConditions Selected
+            => new BoolConditions(() => _element.Selected, $"{_element} Selected");
     }
 }

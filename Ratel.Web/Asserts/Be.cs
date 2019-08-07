@@ -23,37 +23,37 @@ namespace Ratel.Web.Asserts
 
         public RWebElement Exist()
         {
-            _automationManager.Wait(_rWebElement).Until(x => x.Exist);
+            _automationManager.AnyWait(_rWebElement).Until(x => x.Exist);
             return _rWebElement;
         }
 
         public RWebElement Visible()
         {
-            _automationManager.Wait(_rWebElement).Until(x => x.Displayed == _condition);
+            _automationManager.AnyWait(_rWebElement).Until(x => x.Displayed == _condition);
             return _rWebElement;
         }
 
         public RWebElement Clickable()
         {
-            _automationManager.Wait(_rWebElement).Until(x => (x.Displayed && x.Enabled) == _condition);
+            _automationManager.AnyWait(_rWebElement).Until(x => (x.Displayed && x.Enabled) == _condition);
             return _rWebElement;
         }
 
         public RWebElement Selected()
         {
-            _automationManager.Wait(_rWebElement).Until(x => x.Selected == _condition);
+            _automationManager.AnyWait(_rWebElement).Until(x => x.Selected == _condition);
             return _rWebElement;
         }
 
         public RWebElement Enabled()
         {
-            _automationManager.Wait(_rWebElement).Until(x => x.Enabled == _condition);
+            _automationManager.AnyWait(_rWebElement).Until(x => x.Enabled == _condition);
             return _rWebElement;
         }
 
         public RWebElement Displayed()
         {
-            _automationManager.Wait(_rWebElement).Until(x => x.Displayed == _condition);
+            _automationManager.AnyWait(_rWebElement).Until(x => x.Displayed == _condition);
             return _rWebElement;
         }
 
