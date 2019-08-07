@@ -21,13 +21,13 @@ namespace Ratel.Test.Pages
 
         public TestAppPage AssertFullNameValueAreEqual(string text)
         {
-            Els(By.XPath("//*[@name='name']"), "Name field")[0].Assert.Value.AreEqual(text);
+            Els(By.XPath("//*[@name='name']"), "Name field")[0].Assert.Value.Is.Equal(text);
             return this;
         }
 
         public TestAppPage AssertFullNameValueIsEmpty()
         {
-            Els(By.XPath("//*[@name='name']"), "Name field")[0].Assert.Value.IsEmpty();
+            Els(By.XPath("//*[@name='name']"), "Name field")[0].Assert.Value.Is.Empty();
             return this;
         }
     }

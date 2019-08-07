@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 
 namespace Ratel.Web.Asserts
 {
-    public class StringCondition
+    public class StringConditions
     {
         private readonly Func<string> _value;
 
@@ -17,48 +17,43 @@ namespace Ratel.Web.Asserts
 
         private readonly string _description;
 
-        string currentCondition = string.Empty;
 
-        public StringCondition(Func<string> value, AutomationManager automationManager, bool condition, string description)
+        public StringConditions(Func<string> value,  bool condition, string description, AutomationManager automationManager, RWebElement rWebElement)
         {
             _value = value;
             _automationManager = automationManager;
             _condition = condition;
             _description = description;
+            _rWebElement = rWebElement;
         }
 
         public RWebElement AreEqual(string value)
         {
-            currentCondition = nameof(AreEqual);
-            GetStringCondition(AreEqualCondition, value);
+            GetStringCondition(AreEqualCondition, value, nameof(EndsWith));
             return _rWebElement;
         }
 
         public RWebElement Contains(string value)
         {
-            currentCondition = nameof(Contains);
-            GetStringCondition(ContainsCondition, value);
+            GetStringCondition(ContainsCondition, value, nameof(EndsWith));
             return _rWebElement;
         }
 
         public RWebElement StartsWith(string value)
         {
-            currentCondition = nameof(StartsWith);
-            GetStringCondition(StartsWithCondition, value);
+            GetStringCondition(StartsWithCondition, value, nameof(EndsWith));
             return _rWebElement;
         }
 
         public RWebElement EndsWith(string value)
         {
-            currentCondition = nameof(EndsWith);
-            GetStringCondition(EndsWithCondition, value);
+            GetStringCondition(EndsWithCondition, value, nameof(EndsWith));
             return _rWebElement;
         }
 
         public RWebElement IsEmpty()
         {
-            currentCondition = nameof(IsEmpty);
-            GetStringCondition(AreEqualCondition, string.Empty);
+            GetStringCondition(AreEqualCondition, string.Empty, nameof(IsEmpty));
             return _rWebElement;
         }
 
@@ -82,7 +77,12 @@ namespace Ratel.Web.Asserts
             return actual.EndsWith(expected) == _condition;
         }
 
-        private void GetStringCondition(Func<string, string, bool> condition, string expected)
+        private string GetDescription(string propertyName)
+        {
+            return $"{_description} {propertyName}";
+        }
+
+        private void GetStringCondition(Func<string, string, bool> condition, string expected, string propertyName)
         {
             var actual = string.Empty;
             try
@@ -100,7 +100,7 @@ namespace Ratel.Web.Asserts
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw new WebDriverTimeoutException($"Condition is not a true: {_description} {currentCondition} Expected: {expected}. Actual: {actual} ", e);
+                throw new WebDriverTimeoutException($"Condition is not a true: {GetDescription(propertyName)} Expected: {expected}. Actual: {actual} ", e);
             }
         }
     }

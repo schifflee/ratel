@@ -7,15 +7,18 @@ namespace Ratel.Web.Asserts
     public class Be
     {
 
+        private readonly bool _condition;
+        private readonly string _description;
         private readonly RWebElement _rWebElement;
         private readonly AutomationManager _automationManager;
-        private readonly bool _condition;
 
-        public Be(RWebElement rWebElement, AutomationManager automationManager, bool condition)
+        public Be(bool condition, string description, RWebElement rWebElement, AutomationManager automationManager)
         {
+
+            _condition = condition;
+            _description = description;
             _rWebElement = rWebElement;
             _automationManager = automationManager;
-            _condition = condition;
         }
 
         public RWebElement Exist()
@@ -52,6 +55,11 @@ namespace Ratel.Web.Asserts
         {
             _automationManager.Wait(_rWebElement).Until(x => x.Displayed == _condition);
             return _rWebElement;
+        }
+
+        private string GetDescription(string propertyName)
+        {
+            return $"{_description} {propertyName}";
         }
     }
 }

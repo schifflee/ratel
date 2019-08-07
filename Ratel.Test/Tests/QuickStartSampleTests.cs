@@ -13,9 +13,8 @@ namespace Ratel.Test.Tests
         public void AngularDocsTest()
         {
             Driver.Navigate().GoToUrl("https://angular.io/");
-            El(By.XPath("//*[@title='Docs']")).Click();
-            El(By.Id("introduction-to-the-angular-docs")).Assert.Text.AreEqual("Introduction to the Angular Docs");
-
+            El(By.XPath("//*[@title='Docs']")).Click(x => x.Exist());
+            El(By.Id("introduction-to-the-angular-docs")).Assert.Text.Is.Equal("Introduction to the Angular Docs");
         }
 
         [Test]
@@ -23,7 +22,10 @@ namespace Ratel.Test.Tests
         {
             Driver.Navigate().GoToUrl("https://angular.io/");
             El(By.XPath("//*[@title='Resources']")).Click();
-            El(By.XPath("//*[@id='development']/..")).Assert.Text.AreEqual("Development");
+
+            El(By.XPath("//*[@id='development']/.."))
+                .Should.Be.Visible()
+                .Assert.Text.Is.Contain("Development");
         }
     }
 }

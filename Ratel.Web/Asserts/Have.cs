@@ -6,17 +6,17 @@ namespace Ratel.Web.Asserts
 {
     public class Have
     {
-        private readonly RWebElement _rWebElement;
-        private readonly AutomationManager _automationManager;
         private readonly bool _condition;
         private readonly string _description;
+        private readonly RWebElement _rWebElement;
+        private readonly AutomationManager _automationManager;
 
-        public Have(RWebElement rWebElement, AutomationManager automationManager, bool condition, string description)
+        public Have(bool condition, string description, RWebElement rWebElement, AutomationManager automationManager)
         {
-            _rWebElement = rWebElement;
-            _automationManager = automationManager;
             _condition = condition;
             _description = description;
+            _rWebElement = rWebElement;
+            _automationManager = automationManager;
         }
 
         private string GetDescription(string propertyName)
@@ -24,8 +24,11 @@ namespace Ratel.Web.Asserts
             return $"{_description} {propertyName}";
         }
 
-        public StringCondition Text => new StringCondition(() => _rWebElement.Text, _automationManager, _condition, GetDescription(nameof(Text)));
-        public StringCondition Value => new StringCondition(() => _rWebElement.Value, _automationManager, _condition, GetDescription(nameof(Value)));
-        public StringCondition Attribute(string attributeName) => new StringCondition(() => _rWebElement.GetAttribute(attributeName), _automationManager, _condition, GetDescription( $"{nameof(Attribute)}({attributeName})"));
+        public StringConditions Text 
+            => new StringConditions(() => _rWebElement.Text, _condition, GetDescription(nameof(Text)), _automationManager, _rWebElement);
+        public StringConditions Value 
+            => new StringConditions(() => _rWebElement.Value, _condition, GetDescription(nameof(Value)), _automationManager, _rWebElement);
+        public StringConditions Attribute(string attributeName) 
+            => new StringConditions(() => _rWebElement.GetAttribute(attributeName), _condition, GetDescription( $"{nameof(Attribute)}({attributeName})"), _automationManager, _rWebElement);
     }
 }

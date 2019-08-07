@@ -4,21 +4,23 @@
     {
         private readonly RWebElement _rWebElement;
         private readonly AutomationManager _automationManager;
+        private readonly bool _condition;
+        private readonly string _description;
 
-        public Should(RWebElement rWebElement, AutomationManager automationManager)
+        public Should(RWebElement rWebElement, AutomationManager automationManager, bool condition, string description)
         {
             _rWebElement = rWebElement;
             _automationManager = automationManager;
+            _condition = condition;
+            _description = description;
         }
 
-        private string GetDescription(string conditionName)
+        private string GetDescription(string propertyName)
         {
-            return $"{_rWebElement} {nameof(Should)} {conditionName}";
+            return $"{_rWebElement} {_description} {propertyName}";
         }
 
-        public Have Have => new Have(_rWebElement, _automationManager, true, GetDescription(nameof(Have)));
-        public Have NotHave => new Have(_rWebElement, _automationManager, false, GetDescription(nameof(NotHave)));
-        public Be Be => new Be(_rWebElement, _automationManager, true);
-        public Be NotBe => new Be(_rWebElement, _automationManager, false);
+        public Have Have => new Have(_condition, GetDescription(nameof(Have)), _rWebElement, _automationManager);
+        public Be Be => new Be(_condition, GetDescription(nameof(Be)), _rWebElement, _automationManager);
     }
 }

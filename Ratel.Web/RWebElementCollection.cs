@@ -92,7 +92,7 @@ namespace Ratel.Web
         {
             return new RWebElementCollection(_automationManager,
                 new ElementsFinderFromCollectionByCondition(this, c => new ReadOnlyCollection<IWebElement>(c.FindAll()
-                    .Where(x => x.Text.Contains(text)).ToList()), $"Where(x => x.Text.Contains({text})", Name));
+                    .Where(x => x.Text.Contains(text)).ToList()), $"Where(x => x.Text.Contain({text})", Name));
         }
 
         public RWebElementCollection WhereTextStartsWith(string text)
@@ -120,7 +120,7 @@ namespace Ratel.Web
         {
             return new RWebElementCollection(_automationManager,
                 new ElementsFinderFromCollectionByCondition(this, c => new ReadOnlyCollection<IWebElement>(c.FindAll()
-                    .Where(x => x.GetAttribute("value").Contains(text)).ToList()), $"Where(x => x.Value.Contains({text})", Name));
+                    .Where(x => x.GetAttribute("value").Contains(text)).ToList()), $"Where(x => x.Value.Contain({text})", Name));
         }
 
         public RWebElementCollection WhereValueStartsWith(string text)
@@ -149,7 +149,7 @@ namespace Ratel.Web
         {
             return new RWebElementCollection(_automationManager,
                 new ElementsFinderFromCollectionByCondition(this, c => new ReadOnlyCollection<IWebElement>(c.FindAll()
-                    .Where(x => x.GetAttribute(attributeName).Contains(text)).ToList()), $"Where(x => x.GetAttribute({attributeName}).Contains({text})", Name));
+                    .Where(x => x.GetAttribute(attributeName).Contains(text)).ToList()), $"Where(x => x.GetAttribute({attributeName}).Contain({text})", Name));
         }
 
         public RWebElementCollection WhereAttributeStartsWith(string attributeName, string text)
@@ -179,7 +179,7 @@ namespace Ratel.Web
                 var els = x.FindAll();
                 if (els.Count < index)
                 {
-                    throw new NoSuchElementException($"Find element '{Name}' by ({_context}).FindElement(By Index{index}) out of range '{els.Count}'");
+                    throw new NoSuchElementException($"FindWithCache element '{Name}' by ({_context}).FindElement(By Index{index}) out of range '{els.Count}'");
                 }
                 return x.FindAll()[index];
             }, $"FindAll()[{index}]", Name)); 

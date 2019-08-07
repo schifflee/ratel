@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using NUnit.Framework;
@@ -19,8 +20,8 @@ namespace Ratel.Web
             set => RunnerLocal.Value = value;
         }
 
-        protected RWebElement El(By by) => Runner.AutomationManager.El(by);
-        protected RWebElementCollection Els(By by) => Runner.AutomationManager.Els(by);
+        protected RWebElement El(By by, [CallerMemberName]string elementName = "") => Runner.AutomationManager.El(by, elementName);
+        protected RWebElementCollection Els(By by, [CallerMemberName]string elementName = "") => Runner.AutomationManager.Els(by, elementName);
 
         [SetUp]
         public void Setup()
