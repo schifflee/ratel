@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using NUnit.Framework;
 
 namespace Ratel.Web.Asserts
 {
@@ -22,21 +23,27 @@ namespace Ratel.Web.Asserts
             => new StringAsserts(_value, _description, false);
     }
 
-    public class BoolConditions
+    public class AssertConditions
     {
         private readonly Func<bool> _value;
         private readonly string _description;
 
-        public BoolConditions(Func<bool> value, string description)
+        public AssertConditions(Func<bool> value, string description)
         {
             _value = value;
             _description = description;
         }
 
-        public BoolAssert Is
-            => new BoolAssert(_value, _description, true);
-
-        public BoolAssert IsNot
-            => new BoolAssert(_value, _description, false);
+        public void Is(bool condition) {
+            var actual = _value();
+            if (condition)
+            {
+                Assert.IsTrue(actual, $"{_description} is not a {condition}. Actual: '{actual}'");
+            }
+            else
+            {
+                Assert.IsFalse(actual, $"{_description} is a {condition}. Actual: '{actual}'");
+            }
+        }
     }
 }

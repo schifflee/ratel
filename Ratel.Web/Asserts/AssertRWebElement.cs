@@ -32,16 +32,16 @@ namespace Ratel.Web.Asserts
         public StringConditions Property(string propertyName)
             => new StringConditions(() => _element.GetProperty(propertyName), $"Attribute({propertyName}) of {_element}");
 
-        public BoolConditions Displayed
-            => new BoolConditions(() => _element.Displayed, $"{_element} Displayed");
+        public AssertConditions Displayed
+            => new AssertConditions(() => _element.Displayed, $"{_element} Displayed");
 
-        public BoolConditions Enabled
-            => new BoolConditions(() => _element.Enabled, $"{_element} Enabled");
+        public AssertConditions Enabled
+            => new AssertConditions(() => _element.Enabled, $"{_element} Enabled");
 
-        public BoolConditions Exist
-            => new BoolConditions(() => _element.Exist, $"{_element} Exist");
+        public AssertConditions Exist
+            => new AssertConditions(() => _element.Exist, $"{_element} Exist");
 
-        public BoolConditions Selected
-            => new BoolConditions(() => _element.Selected, $"{_element} Selected");
+        public AssertConditions Selected
+            => new AssertConditions(() => _element.Selected, $"{_element} Selected");
     }
 }

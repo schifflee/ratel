@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 namespace Ratel.Web.Models
 {
@@ -36,14 +37,14 @@ namespace Ratel.Web.Models
         [JsonProperty("baseUrl")]
         public string BaseUrl { get; set; } = string.Empty;
 
-        [JsonProperty("loginUrl")]
-        public string LoginUrl { get; set; } = string.Empty;
-
         [JsonProperty("urls")]
         public Dictionary<string, string> Urls { get; set; } = new Dictionary<string, string>();
 
 
         [JsonProperty("chromeOptions")]
-        public ChromeOptionsConfig ChromeChromeOptions { get; set; } = new ChromeOptionsConfig();
+        public ChromeOptionsConfig ChromeOptionsConfig { get; set; } = new ChromeOptionsConfig();
+
+        [JsonIgnore]
+        public ChromeOptions ChromeOptions{ get; set; }
     }
 }

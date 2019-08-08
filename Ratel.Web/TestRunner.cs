@@ -84,7 +84,7 @@ namespace Ratel.Web
                 case "Firefox":
                     return new RWebDriver(new FirefoxDriver(FirefoxDriverService.CreateDefaultService(), new FirefoxOptions(), TimeSpan.FromSeconds(Config.TimeoutMilliseconds)), automationManager);
                 default:
-                    if (string.IsNullOrEmpty(Config.ChromeChromeOptions.BinaryLocation))
+                    if (string.IsNullOrEmpty(Config.ChromeOptionsConfig.BinaryLocation))
                     {
                         return new RWebDriver(new ChromeDriver(AppDomain.CurrentDomain.BaseDirectory, GetChromeOptions()), automationManager);
                     }
@@ -96,27 +96,27 @@ namespace Ratel.Web
         {
             var options = new ChromeOptions();
 
-            if (string.IsNullOrEmpty(Config.ChromeChromeOptions.BinaryLocation))
+            if (string.IsNullOrEmpty(Config.ChromeOptionsConfig.BinaryLocation))
             {
-                options.BinaryLocation = Config.ChromeChromeOptions.BinaryLocation;
+                options.BinaryLocation = Config.ChromeOptionsConfig.BinaryLocation;
             }
 
-            Config.ChromeChromeOptions.Arguments.ForEach(x =>
+            Config.ChromeOptionsConfig.Arguments.ForEach(x =>
             {
                 options.AddArgument(x);
             });
 
-            foreach (var data in Config.ChromeChromeOptions.AdditionalCapability)
+            foreach (var data in Config.ChromeOptionsConfig.AdditionalCapability)
             {
                 options.AddAdditionalCapability(data.Key, data.Value);
             }
 
-            foreach (var data in Config.ChromeChromeOptions.LocalStatePreference)
+            foreach (var data in Config.ChromeOptionsConfig.LocalStatePreference)
             {
                 options.AddLocalStatePreference(data.Key, data.Value);
             }
 
-            foreach (var data in Config.ChromeChromeOptions.UserProfilePreference)
+            foreach (var data in Config.ChromeOptionsConfig.UserProfilePreference)
             {
                 options.AddUserProfilePreference(data.Key, data.Value);
             }

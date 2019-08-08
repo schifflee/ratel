@@ -95,7 +95,7 @@ namespace Ratel.Web
         /// <typeparam name="TResult">The delegate's expected return type.</typeparam>
         /// <param name="condition">A delegate taking an object of type T as its parameter, and returning a TResult.</param>
         /// <returns>The delegate's return value.</returns>
-        public virtual TResult Until<TResult>(Func<T, TResult> condition)
+        public TResult Until<TResult>(Func<T, TResult> condition)
         {
             if (condition == null)
             {
@@ -133,8 +133,56 @@ namespace Ratel.Web
                 // with a zero timeout can succeed.
                 if (!_clock.IsNowBefore(endTime))
                 {
-                    var timeoutMessage = string.Format(CultureInfo.InvariantCulture, "Timed out after {0} seconds", this.Timeout.TotalSeconds);
-                    if (!string.IsNullOrEmpty(this.Message))
+                    var timeoutMessage = string.Format(CultureInfo.InvariantCulture, "Timed out after {0} seconds", Timeout.TotalSeconds);
+                    if (!string.IsNullOrEmpty(Message))
+                    {
+                        timeoutMessage += ": " + Message;
+                    }
+
+                    ThrowTimeoutException(timeoutMessage, lastException);
+                }
+
+                Thread.Sleep(PollingInterval);
+            }
+        }
+
+        public void Until<TResult>(Action action)
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException("condition", "condition cannot be null");
+            }
+
+            var resultType = typeof(TResult);
+            if ((resultType.IsValueType && resultType != typeof(bool)) || !typeof(object).IsAssignableFrom(resultType))
+            {
+                throw new ArgumentException("Can only wait on an object or boolean response, tried to use type: " + resultType.ToString(), "condition");
+            }
+
+            var endTime = _clock.LaterBy(Timeout);
+            while (true)
+            {
+                Exception lastException;
+                try
+                {
+                    action();
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    if (!IsIgnoredException(ex))
+                    {
+                        throw;
+                    }
+                    lastException = ex;
+                }
+
+                // Check the timeout after evaluating the function to ensure conditions
+                // with a zero timeout can succeed.
+                if (!_clock.IsNowBefore(endTime))
+                {
+                    var timeoutMessage = string.Format(CultureInfo.InvariantCulture, "Timed out after {0} seconds", Timeout.TotalSeconds);
+                    if (!string.IsNullOrEmpty(Message))
                     {
                         timeoutMessage += ": " + Message;
                     }

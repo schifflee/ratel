@@ -22,9 +22,7 @@ namespace Ratel.Test.Tests
         {
             Driver.Navigate().GoToUrl("https://angular.io/");
             El(By.XPath("//*[@title='Resources']")).Click();
-
             El(By.XPath("//*[@id='development']/.."))
-                .Should.Be.Visible()
                 .Assert.Text.Is.Contain("Development");
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using OpenQA.Selenium;
 using Ratel.Web.Asserts;
+using Ratel.Web.Shoulds;
 
 namespace Ratel.Web
 {

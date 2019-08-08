@@ -8,6 +8,8 @@ using NLog;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using Ratel.Web.Asserts;
+using Ratel.Web.Helpers;
+using Ratel.Web.Shoulds;
 
 namespace Ratel.Web
 {
@@ -51,8 +53,14 @@ namespace Ratel.Web
         }
 
         public AssertRWebElement Assert => new AssertRWebElement(this, _automationManager);
-        public Should Should => new Should(this, _automationManager, true, nameof(Should));
-        public Should ShouldNot => new Should(this, _automationManager, false, nameof(ShouldNot));
+        public Should Should 
+            => new Should(new ConditionBuilder(ToString(), Name)
+                .Append(nameof(Should)).SetExpectedCondition(true),
+                this, _automationManager);
+        public Should ShouldNot 
+            => new Should(new ConditionBuilder(ToString(), Name)
+                .Append(nameof(ShouldNot)).SetExpectedCondition(false),
+                this, _automationManager);
 
         public RWebElement FindElement(By by, string name)
         {
