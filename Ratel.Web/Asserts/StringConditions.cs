@@ -23,12 +23,12 @@ namespace Ratel.Web.Asserts
             => new StringAsserts(_value, _description, false);
     }
 
-    public class AssertConditions
+    public class BoolConditions
     {
         private readonly Func<bool> _value;
         private readonly string _description;
 
-        public AssertConditions(Func<bool> value, string description)
+        public BoolConditions(Func<bool> value, string description)
         {
             _value = value;
             _description = description;

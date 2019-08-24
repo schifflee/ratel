@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using OpenQA.Selenium;
+using Ratel.Web.RWebElementsCollections;
 
 namespace Ratel.Web
 {
@@ -16,6 +17,11 @@ namespace Ratel.Web
 
         protected RWebElement El(By by, string name) => AutomationManager.El(by, name);
         protected RWebElementCollection Els(By by, string name) => AutomationManager.Els(by, name);
+
+        public void SwitchBaseUrl(string key)
+        {
+            AutomationManager.Config.SwitchBaseUrl(key);
+        }
 
     }
 }

@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using OpenQA.Selenium;
+using Ratel.Web.RWebElementsCollections;
 
 namespace Ratel.Web
 {
-    public abstract class SearchContext<T>
+    public abstract class BaseElementFinder<T>
     {
         public string Name { get; set; }
         public abstract string Description { get; }
         public abstract T Find();
 
-        protected SearchContext(string name)
+        protected BaseElementFinder(string name)
         {
             Name = name;
         }
@@ -23,7 +24,7 @@ namespace Ratel.Web
         }
     }
 
-    internal class ElementFinder : SearchContext<IWebElement>
+    internal class ElementFinder : BaseElementFinder<IWebElement>
     {
         private readonly ISearchContext _context;
         private readonly By _locator;
@@ -38,7 +39,7 @@ namespace Ratel.Web
         public override IWebElement Find() => _context.FindElement(_locator);
     }
 
-    internal class ElementsFinder : SearchContext<ReadOnlyCollection<IWebElement>>
+    internal class ElementsFinder : BaseElementFinder<ReadOnlyCollection<IWebElement>>
     {
         private readonly ISearchContext _context;
         private readonly By _locator;
@@ -54,7 +55,7 @@ namespace Ratel.Web
     }
 
 
-    internal class ElementFinderFromCollectionByCondition : SearchContext<IWebElement>
+    internal class ElementFinderFromCollectionByCondition : BaseElementFinder<IWebElement>
     {
         private readonly RWebElementCollection _collection;
         private readonly string _conditionDescription;
@@ -71,7 +72,7 @@ namespace Ratel.Web
         public override IWebElement Find() => _condition(_collection);
     }
 
-    internal class ElementsFinderFromCollectionByCondition : SearchContext<ReadOnlyCollection<IWebElement>>
+    internal class ElementsFinderFromCollectionByCondition : BaseElementFinder<ReadOnlyCollection<IWebElement>>
     {
         private readonly RWebElementCollection _collection;
         private readonly string _conditionDescription;

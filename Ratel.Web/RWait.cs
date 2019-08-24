@@ -9,7 +9,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace Ratel.Web
 {
-    public class AnyWait<T> : IWait<T>
+    public class RWait<T> : IWait<T>
     {
         private readonly T _input;
         private readonly IClock _clock;
@@ -17,20 +17,20 @@ namespace Ratel.Web
         private readonly List<Type> _ignoredExceptions = new List<Type>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AnyWait&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="RWait{T}"/> class.
         /// </summary>
         /// <param name="input">The input value to pass to the evaluated conditions.</param>
-        public AnyWait(T input)
+        public RWait(T input)
             : this(input, new SystemClock())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AnyWait&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="RWait{T}"/> class.
         /// </summary>
         /// <param name="input">The input value to pass to the evaluated conditions.</param>
         /// <param name="clock">The clock to use when measuring the timeout.</param>
-        public AnyWait(T input, IClock clock)
+        public RWait(T input, IClock clock)
         {
             if (input == null)
             {

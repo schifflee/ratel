@@ -64,11 +64,11 @@ namespace Ratel.Web
                 }
 
                 AutomationManager.Driver?.Quit();
-                Logger.Debug("Close Driver");
+                Logger.Debug("Close Browser");
             }
             catch (Exception e)
             {
-                Logger.Error(e, "Close Driver after Exception");
+                Logger.Error(e, "Close Browser after Exception");
                 AutomationManager.Driver?.Quit();
             }
         }

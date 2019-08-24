@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using Ratel.Web.RWebElementsCollections;
 
 namespace Ratel.Web
 {
@@ -12,7 +13,7 @@ namespace Ratel.Web
     public abstract class BaseTestQuickStart
     {
         private static readonly ThreadLocal<TestRunner> RunnerLocal = new ThreadLocal<TestRunner>();
-        protected  IRWebDriver Driver => Runner.AutomationManager.Driver;
+        protected  IRWebDriver Browser => Runner.AutomationManager.Driver;
 
         protected TestRunner Runner
         {

@@ -9,6 +9,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using Ratel.Web.Asserts;
 using Ratel.Web.Helpers;
+using Ratel.Web.RWebElementsCollections;
 using Ratel.Web.Shoulds;
 
 namespace Ratel.Web
@@ -18,7 +19,7 @@ namespace Ratel.Web
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly AutomationManager _automationManager;
-        private readonly SearchContext<IWebElement> _context;
+        private readonly BaseElementFinder<IWebElement> _context;
 
         public string Name { get; set; }
         internal IWebElement Cache { get; set; }
@@ -30,7 +31,7 @@ namespace Ratel.Web
             _context = new ElementFinder(locator, name, automationManager.Driver);
         }
 
-        public RWebElement(AutomationManager automationManager, SearchContext<IWebElement> context)
+        public RWebElement(AutomationManager automationManager, BaseElementFinder<IWebElement> context)
         {
             Name = context.Name;
             _automationManager = automationManager;
@@ -197,7 +198,7 @@ namespace Ratel.Web
         private void ExecuteAction(Action action)
         {
             _automationManager
-                .AnyWait(this)
+                .Wait(this)
                 .Until(x =>
             {
                 try
@@ -216,7 +217,7 @@ namespace Ratel.Web
         private T ExecuteFunc<T>(Func<T> func)
         {
             return _automationManager
-                .AnyWait(this)
+                .Wait(this)
                 .Until(x =>
                 {
                     try

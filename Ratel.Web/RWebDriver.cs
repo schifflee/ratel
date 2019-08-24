@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using NLog;
 using OpenQA.Selenium;
 using Ratel.Web.Asserts;
+using Ratel.Web.RWebElementsCollections;
 
 namespace Ratel.Web
 {

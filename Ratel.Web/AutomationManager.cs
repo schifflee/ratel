@@ -5,6 +5,7 @@ using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using Ratel.Web.Models;
+using Ratel.Web.RWebElementsCollections;
 
 namespace Ratel.Web
 {
@@ -33,9 +34,9 @@ namespace Ratel.Web
             return wait;
         }
 
-        public AnyWait<T> AnyWait<T>(T input)
+        public RWait<T> Wait<T>(T input)
         {
-            var wait = new AnyWait<T>(input);
+            var wait = new RWait<T>(input);
             wait.IgnoreExceptionTypes(Config.IgnoredExceptions.ToArray());
             wait.PollingInterval = TimeSpan.FromMilliseconds(Config.WaitIntervalMilliseconds);
             wait.Timeout = TimeSpan.FromMilliseconds(Config.TimeoutMilliseconds);
