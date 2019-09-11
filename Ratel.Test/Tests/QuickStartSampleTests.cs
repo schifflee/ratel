@@ -22,9 +22,8 @@ namespace Ratel.Test.Tests
         public void AngularResourcesTest()
         {
             Browser.Navigate().GoToUrl("https://angular.io/");
-
-            Els(By.XPath("//*[@title='Resources']")).Filter.Attribute("").Contains("dd").First().Click();
-
+            El(By.XPath("//*[@title='Resources']")).Assert.Text.Is.Contain("RESOURCES");
+            El(By.XPath("//*[@title='Resources']")).Should.Have.Text.Contains("RESOURCES");
         }
     }
 }

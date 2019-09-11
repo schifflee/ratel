@@ -7,20 +7,20 @@ namespace Ratel.Web.Shoulds
     {
         private readonly RWebElement _rWebElement;
         private readonly AutomationManager _automationManager;
-        private readonly ConditionBuilder _condition;
+        private readonly ExpressionBuilder _expression;
 
-        public Should(ConditionBuilder condition, RWebElement rWebElement, AutomationManager automationManager)
+        public Should(ExpressionBuilder expression, RWebElement rWebElement, AutomationManager automationManager)
         {
-            _condition = condition;
+            _expression = expression;
             _rWebElement = rWebElement;
             _automationManager = automationManager;
 
         }
 
         public Have Have 
-            => new Have(_condition.Append(nameof(Have)), _rWebElement, _automationManager);
+            => new Have(_expression.Append(nameof(Have)), _rWebElement, _automationManager);
 
         public Be Be 
-            => new Be( _condition.Append(nameof(Be)), _rWebElement, _automationManager);
+            => new Be( _expression.Append(nameof(Be)), _rWebElement, _automationManager);
     }
 }

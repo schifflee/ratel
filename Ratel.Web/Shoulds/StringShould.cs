@@ -10,10 +10,10 @@ namespace Ratel.Web.Shoulds
 
         private readonly AutomationManager _automationManager;
 
-        private readonly ConditionBuilder _condition;
+        private readonly ExpressionBuilder<string> _condition;
 
 
-        public StringShould(ConditionBuilder condition, AutomationManager automationManager, RWebElement rWebElement)
+        public StringShould(ExpressionBuilder<string> condition, AutomationManager automationManager, RWebElement rWebElement)
         {
             _automationManager = automationManager;
             _condition = condition;
@@ -52,22 +52,22 @@ namespace Ratel.Web.Shoulds
 
         private bool AreEqualCondition(string expected, string actual)
         {
-            return (actual == expected) == _condition.ExpectedCondition;
+            return (actual == expected) == _condition.Condition.Operator;
         }
 
         private bool ContainsCondition(string expected, string actual)
         {
-            return actual.Contains(expected) == _condition.ExpectedCondition;
+            return actual.Contains(expected) == _condition.Condition.Operator;
         }
 
         private bool StartsWithCondition(string expected, string actual)
         {
-            return actual.StartsWith(expected) == _condition.ExpectedCondition;
+            return actual.StartsWith(expected) == _condition.Condition.Operator;
         }
 
         private bool EndsWithCondition(string expected, string actual)
         {
-            return actual.EndsWith(expected) == _condition.ExpectedCondition;
+            return actual.EndsWith(expected) == _condition.Condition.Operator;
         }
 
         private void ExecuteCondition(Func<string, string, bool> condition, string expected, string propertyName)
@@ -76,9 +76,9 @@ namespace Ratel.Web.Shoulds
 
             wait.Until(x =>
             {
-                var actual = x.Result();
+                var actual = x.Expression();
                 wait.Message =
-                    $"Failed to get condition: {_condition.Description} {propertyName}: {expected}. Actual: {actual} ";
+                    $"Failed to get condition: {_condition.Condition.Description} {propertyName}: {expected}. Actual: {actual} ";
                 return condition(actual.ToString(), expected);
             });
         }

@@ -55,12 +55,12 @@ namespace Ratel.Web
 
         public AssertRWebElement Assert => new AssertRWebElement(this, _automationManager);
         public Should Should 
-            => new Should(new ConditionBuilder(ToString(), Name)
-                .Append(nameof(Should)).SetExpectedCondition(true),
+            => new Should(new ExpressionBuilder(ToString(), Name)
+                .Append(nameof(Should)).SetOperator(true),
                 this, _automationManager);
         public Should ShouldNot 
-            => new Should(new ConditionBuilder(ToString(), Name)
-                .Append(nameof(ShouldNot)).SetExpectedCondition(false),
+            => new Should(new ExpressionBuilder(ToString(), Name)
+                .Append(nameof(ShouldNot)).SetOperator(false),
                 this, _automationManager);
 
         public RWebElement FindElement(By by, string name)

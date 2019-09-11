@@ -25,12 +25,12 @@ namespace Ratel.Web.RWebElementsCollections
 
         public List<string> Style => _elementCollection.Select(x => x.GetAttribute("style")).ToList();
 
-        public List<string> GetAttribute(string attributeName) 
+        public List<string> Attribute(string attributeName) 
             => _elementCollection.Select(x => x.GetAttribute(attributeName)).ToList();
 
-        public List<string> GetCssValue(string propertyName) 
+        public List<string> CssValue(string propertyName) 
             => _elementCollection.Select(x => x.GetCssValue(propertyName)).ToList();
-        public List<string> GetProperty(string propertyName) 
+        public List<string> Property(string propertyName) 
             => _elementCollection.Select(x => x.GetProperty(propertyName)).ToList();
 
         public List<bool> Displayed => _elementCollection.Select(x => x.Displayed).ToList();

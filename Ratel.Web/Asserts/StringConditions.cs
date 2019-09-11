@@ -19,6 +19,9 @@ namespace Ratel.Web.Asserts
         public StringAsserts Is
             => new StringAsserts(_value, _description, true);
 
+        public StringAsserts toBe(bool condition)
+            => new StringAsserts(_value, _description, condition);
+
         public StringAsserts IsNot
             => new StringAsserts(_value, _description, false);
     }

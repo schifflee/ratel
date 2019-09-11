@@ -36,7 +36,7 @@ namespace Ratel.Web.RWebElementsCollections
                 var condition = new ElementsFinderFromCollectionByCondition(_elementCollection, c =>
                         new ReadOnlyCollection<IWebElement>(c.FindAll()
                             .Where(x => func(x.GetAttribute("style"))).ToList()),
-                    $"Where(x => x.GetAttribute('style').{funcName}({style})", Name += $" Filtered By GetAttribute('style').{funcName}({style})");
+                    $"Where(x => x.Attribute('style').{funcName}({style})", Name += $" Filtered By Attribute('style').{funcName}({style})");
                 return new RWebElementCollection(_automationManager, condition);
             });
 
@@ -46,7 +46,7 @@ namespace Ratel.Web.RWebElementsCollections
                 var condition = new ElementsFinderFromCollectionByCondition(_elementCollection, c =>
                         new ReadOnlyCollection<IWebElement>(c.FindAll()
                             .Where(x => func(x.GetAttribute("value"))).ToList()),
-                    $"Where(x => x.GetAttribute('value').{funcName}({value})", Name += $" Filtered By GetAttribute('value').{funcName}({value})");
+                    $"Where(x => x.Attribute('value').{funcName}({value})", Name += $" Filtered By Attribute('value').{funcName}({value})");
                 return new RWebElementCollection(_automationManager, condition);
             });
 
@@ -57,7 +57,7 @@ namespace Ratel.Web.RWebElementsCollections
                 var condition = new ElementsFinderFromCollectionByCondition(_elementCollection, c =>
                         new ReadOnlyCollection<IWebElement>(c.FindAll()
                             .Where(x => func(x.GetAttribute(attributeName))).ToList()),
-                    $"Where(x => x.GetAttribute({attributeName}).{funcName}({text})", Name += $" Filtered By GetAttribute({attributeName}).{funcName}({text})");
+                    $"Where(x => x.Attribute({attributeName}).{funcName}({text})", Name += $" Filtered By Attribute({attributeName}).{funcName}({text})");
                 return new RWebElementCollection(_automationManager, condition);
             });
         }
@@ -69,7 +69,7 @@ namespace Ratel.Web.RWebElementsCollections
                 var condition = new ElementsFinderFromCollectionByCondition(_elementCollection, c =>
                         new ReadOnlyCollection<IWebElement>(c.FindAll()
                             .Where(x => func(x.GetProperty(propertyName))).ToList()),
-                    $"Where(x => x.GetProperty({propertyName}).{funcName}({text})", Name += $" Filtered By GetProperty({propertyName}).{funcName}({text})");
+                    $"Where(x => x.Property({propertyName}).{funcName}({text})", Name += $" Filtered By Property({propertyName}).{funcName}({text})");
                 return new RWebElementCollection(_automationManager, condition);
             });
         }
@@ -81,7 +81,7 @@ namespace Ratel.Web.RWebElementsCollections
                 var condition = new ElementsFinderFromCollectionByCondition(_elementCollection, c =>
                         new ReadOnlyCollection<IWebElement>(c.FindAll()
                             .Where(x => func(x.GetCssValue(propertyName))).ToList()),
-                    $"Where(x => x.GetCssValue({propertyName}).{funcName}({text})", Name += $" Filtered By GetCssValue({propertyName}).{funcName}({text})");
+                    $"Where(x => x.CssValue({propertyName}).{funcName}({text})", Name += $" Filtered By CssValue({propertyName}).{funcName}({text})");
                 return new RWebElementCollection(_automationManager, condition);
             });
         }

@@ -21,7 +21,7 @@ namespace Ratel.Test.Pages
 
         public TestAppPage AssertFullNameValueAreEqual(string text)
         {
-            Els(By.XPath("//*[@name='name']"), "Name field")[0].Assert.Value.Is.Equal(text);
+            Els(By.XPath("//*[@name='name']"), "Name field")[0].Assert.Value.toBe(false).Equal(text);
             return this;
         }
 
